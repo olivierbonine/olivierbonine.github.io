@@ -1,539 +1,304 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product Design Learning Library</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              400: '#60a5fa',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8'
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Design Playbook & Multi-Feed Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
             }
-          }
         }
-      }
-    };
-  </script>
+    </script>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
-  <header class="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur">
-    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-3">
-        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-brand-600 to-emerald-500 font-bold text-white">P</div>
-        <div>
-          <p class="text-sm font-semibold leading-none">Product Design Learning Library</p>
-          <p class="mt-1 text-xs text-slate-400">Summaries, TL;DRs, and quizzes for design learning resources</p>
+<body class="flex flex-col min-h-full font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-gradient-to-tr from-brand-600 to-emerald-500 flex items-center justify-center font-bold text-white text-lg">
+                    P
+                </div>
+                <span class="font-bold tracking-tight text-lg sm:text-xl">DesignOps Portal</span>
+            </div>
+            <nav class="flex space-x-6 text-sm font-medium text-slate-400">
+                <a href="#laws" class="hover:text-white transition-colors">Core Laws</a>
+                <a href="#feed-section" class="hover:text-white transition-colors">Dynamic Library</a>
+            </nav>
         </div>
-      </div>
-      <nav class="hidden items-center gap-6 text-sm text-slate-400 md:flex">
-        <a href="#rules" class="transition hover:text-white">Core rules</a>
-        <a href="#library" class="transition hover:text-white">Library</a>
-      </nav>
-    </div>
-  </header>
+    </header>
 
-  <main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-    <section class="max-w-3xl">
-      <span class="inline-flex items-center rounded-full border border-brand-500/20 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-100">
-        GitHub Pages ready
-      </span>
-      <h1 class="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
-        Key product design rules and the best learning materials in one place
-      </h1>
-      <p class="mt-5 text-lg leading-relaxed text-slate-400">
-        A single-file learning hub for product designers, UX designers, and product teams. Each resource includes a detailed summary, key learnings, a TL;DR, and a built-in quiz.
-      </p>
-    </section>
-
-    <section id="rules" class="mt-12 scroll-mt-24">
-      <div class="mb-6 border-b border-slate-800 pb-4">
-        <h2 class="text-2xl font-bold">Core product design rules</h2>
-        <p class="mt-1 text-sm text-slate-400">A compact set of principles to keep the library grounded in good product thinking.</p>
-      </div>
-      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-brand-400">01</p>
-          <h3 class="mt-2 text-lg font-semibold">Start with the problem</h3>
-          <p class="mt-2 text-sm text-slate-400">Understand the user's need before exploring a solution.</p>
-        </article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-brand-400">02</p>
-          <h3 class="mt-2 text-lg font-semibold">Reduce friction</h3>
-          <p class="mt-2 text-sm text-slate-400">Make the next step obvious and remove unnecessary complexity.</p>
-        </article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-brand-400">03</p>
-          <h3 class="mt-2 text-lg font-semibold">Design consistently</h3>
-          <p class="mt-2 text-sm text-slate-400">Reuse patterns and language so the experience feels familiar.</p>
-        </article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-brand-400">04</p>
-          <h3 class="mt-2 text-lg font-semibold">Validate early</h3>
-          <p class="mt-2 text-sm text-slate-400">Prototype quickly and test ideas before investing too much time.</p>
-        </article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-brand-400">05</p>
-          <h3 class="mt-2 text-lg font-semibold">Design for accessibility</h3>
-          <p class="mt-2 text-sm text-slate-400">Build for everyone, not only for the easiest use case.</p>
-        </article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
-          <p class="text-xs font-semibold uppercase tracking-wider text-brand-400">06</p>
-          <h3 class="mt-2 text-lg font-semibold">Measure outcomes</h3>
-          <p class="mt-2 text-sm text-slate-400">Focus on the effect on users and the business, not just shipping features.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="library" class="mt-14 scroll-mt-24">
-      <div class="mb-8 border-b border-slate-800 pb-4">
-        <h2 class="text-2xl font-bold">Learning library</h2>
-        <p class="mt-1 text-sm text-slate-400">Each resource is accompanied by a summary, key learnings, a TL;DR, and a quiz.</p>
-      </div>
-
-      <div id="status" class="mb-6 text-sm text-slate-400">Loading curated resources…</div>
-      <div id="library-grid" class="grid grid-cols-1 gap-6 xl:grid-cols-2"></div>
-    </section>
-  </main>
-
-  <footer class="mt-14 border-t border-slate-800 py-8">
-    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 text-sm text-slate-500 sm:px-6 lg:px-8 sm:flex-row sm:items-center sm:justify-between">
-      <p>Single-file learning library for GitHub Pages.</p>
-      <p>Static content + dynamic quizzes.</p>
-    </div>
-  </footer>
-
-  <script>
-    const resources = [
-      {
-        id: 'nngroup',
-        type: 'Blog',
-        category: 'blog',
-        sourceName: 'Nielsen Norman Group',
-        title: 'UX research and usability guidance',
-        link: 'https://www.nngroup.com/articles/',
-        badgeClass: 'border-emerald-900/60 bg-emerald-950/40 text-emerald-300',
-        summary: 'NN/g is one of the most respected sources in UX. It focuses on research-backed guidance for usability, accessibility, information architecture, and interface clarity. The main value is that it helps designers justify decisions with evidence instead of opinion.',
-        keyLearning: [
-          'How to identify usability issues quickly',
-          'How to reduce cognitive load in interfaces',
-          'How to use research to support design decisions',
-          'How to design for accessibility and clarity'
-        ],
-        tldr: 'A gold-standard source for evidence-based UX and practical usability advice.',
-        quiz: [
-          {
-            q: 'What is NN/g best known for?',
-            options: ['UX research and usability guidance', 'Illustration libraries', 'Game design theory', 'Motion graphics only'],
-            answer: 0
-          },
-          {
-            q: 'Which outcome best matches NN/g principles?',
-            options: ['More visual noise', 'Lower cognitive load', 'Longer flows', 'More hidden controls'],
-            answer: 1
-          },
-          {
-            q: 'Why do designers read NN/g?',
-            options: ['To justify decisions with evidence', 'To avoid user testing', 'To copy layouts blindly', 'To find meme trends'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: 'design-better',
-        type: 'Podcast',
-        category: 'podcast',
-        sourceName: 'Design Better',
-        title: 'Product design leadership and team workflow',
-        link: 'https://www.designbetter.co/podcast',
-        badgeClass: 'border-sky-900/60 bg-sky-950/40 text-sky-300',
-        summary: 'Design Better features conversations with product and design leaders. It is especially useful for understanding how design teams collaborate with product and engineering, how leaders think about strategy, and how design scales across an organisation.',
-        keyLearning: [
-          'How design teams work with product and engineering',
-          'How leaders think about strategy and execution',
-          'How to scale design systems and processes',
-          'How to communicate design decisions across teams'
-        ],
-        tldr: 'A strong podcast for product design leadership, collaboration, and scaling process.',
-        quiz: [
-          {
-            q: 'Design Better is most useful for learning about…',
-            options: ['Leadership and product design thinking', 'Car repair', 'Cooking recipes', 'Typography only'],
-            answer: 0
-          },
-          {
-            q: 'What kind of ideas does this podcast often explore?',
-            options: ['Team collaboration and strategy', 'Sports analytics', 'Music theory', 'Interior decorating only'],
-            answer: 0
-          },
-          {
-            q: 'A likely takeaway from Design Better is…',
-            options: ['Design scales through process and alignment', 'Design is only visual', 'Testing is optional', 'Systems are unnecessary'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: 'figma-blog',
-        type: 'Blog',
-        category: 'blog',
-        sourceName: 'Figma Blog',
-        title: 'Modern design workflows and collaboration',
-        link: 'https://www.figma.com/blog/',
-        badgeClass: 'border-brand-900/60 bg-brand-950/40 text-brand-200',
-        summary: 'The Figma Blog covers design workflow, collaboration, design systems, prototyping, and practical ways teams ship work. It is especially useful for teams that want to stay current with how modern design processes evolve.',
-        keyLearning: [
-          'How modern design teams collaborate',
-          'How design systems support consistency',
-          'How prototyping speeds up validation',
-          'How tooling influences workflow'
-        ],
-        tldr: 'Useful for modern workflow ideas and practical design system thinking.',
-        quiz: [
-          {
-            q: 'What is the Figma Blog especially useful for?',
-            options: ['Workflow and collaboration ideas', 'Tax advice', 'Movie reviews', 'Recipe planning'],
-            answer: 0
-          },
-          {
-            q: 'Design systems help teams to…',
-            options: ['Stay consistent and scale faster', 'Avoid collaboration', 'Remove all documentation', 'Make products more random'],
-            answer: 0
-          },
-          {
-            q: 'Why read about prototyping?',
-            options: ['To validate ideas faster', 'To delay decisions', 'To avoid feedback', 'To make work less testable'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: 'smashing',
-        type: 'Blog',
-        category: 'blog',
-        sourceName: 'Smashing Magazine',
-        title: 'Practical UX, accessibility, and front-end design',
-        link: 'https://www.smashingmagazine.com/',
-        badgeClass: 'border-violet-900/60 bg-violet-950/40 text-violet-300',
-        summary: 'Smashing Magazine offers a broad mix of design and front-end articles, with lots of practical advice around accessibility, interface patterns, content design, and implementation-aware thinking.',
-        keyLearning: [
-          'How accessibility affects real product design',
-          'How interface decisions connect to front-end execution',
-          'How to use practical patterns in interfaces',
-          'How content and design work together'
-        ],
-        tldr: 'A useful generalist source for practical product design and accessibility.',
-        quiz: [
-          {
-            q: 'Smashing Magazine is best described as…',
-            options: ['A practical design and front-end resource', 'A sports site', 'A music streaming service', 'A social network'],
-            answer: 0
-          },
-          {
-            q: 'Which topic is commonly covered there?',
-            options: ['Accessibility', 'Car engines', 'Fantasy novels', 'Travel deals only'],
-            answer: 0
-          },
-          {
-            q: 'Why is implementation-aware design useful?',
-            options: ['It helps ideas ship more realistically', 'It removes the need for design', 'It makes everything slower by default', 'It only matters after launch'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: '99pi',
-        type: 'Podcast',
-        category: 'podcast',
-        sourceName: '99% Invisible',
-        title: 'Stories about design hidden in everyday life',
-        link: 'https://99percentinvisible.org/',
-        badgeClass: 'border-amber-900/60 bg-amber-950/40 text-amber-300',
-        summary: '99% Invisible explores how design, systems, architecture, and human behaviour shape the world around us. It is not strictly a UX podcast, but it builds stronger design intuition by showing how invisible decisions affect everyday experiences.',
-        keyLearning: [
-          'How systems shape people’s behaviour',
-          'How invisible choices affect everyday experiences',
-          'How design exists beyond screens',
-          'How narratives can sharpen design intuition'
-        ],
-        tldr: 'Great for broadening design thinking beyond interfaces and screens.',
-        quiz: [
-          {
-            q: 'What is 99% Invisible mainly about?',
-            options: ['Design in everyday life and systems', 'Only UI color palettes', 'Cooking and food reviews', 'Gaming hardware'],
-            answer: 0
-          },
-          {
-            q: 'Why is this useful to designers?',
-            options: ['It broadens design intuition', 'It removes the need for research', 'It only teaches typography', 'It replaces all product thinking'],
-            answer: 0
-          },
-          {
-            q: 'A key lesson from 99% Invisible is that…',
-            options: ['Design shapes behaviour even when it is not obvious', 'Design only matters on screens', 'Systems do not matter', 'Stories are irrelevant to design'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: 'the-futur',
-        type: 'YouTube',
-        category: 'video',
-        sourceName: 'The Futur',
-        title: 'Design thinking, creative strategy, and career growth',
-        link: 'https://www.youtube.com/@thefutur',
-        badgeClass: 'border-purple-900/60 bg-purple-950/40 text-purple-300',
-        summary: 'The Futur covers creative thinking, design strategy, pricing, communication, and career development. It is useful for designers who want to improve how they think, sell ideas, and communicate value, not just how they make screens look good.',
-        keyLearning: [
-          'How to communicate design decisions clearly',
-          'How to think about strategy and value',
-          'How to improve your design career and craft',
-          'How to present creative work with confidence'
-        ],
-        tldr: 'Strong for creative strategy, communication, and design career development.',
-        quiz: [
-          {
-            q: 'What is The Futur especially good for?',
-            options: ['Creative strategy and communication', 'Tax filing', 'Sports commentary', 'Cooking demonstrations'],
-            answer: 0
-          },
-          {
-            q: 'A likely takeaway from The Futur is…',
-            options: ['Design is also about value and communication', 'Only visuals matter', 'Strategy is irrelevant', 'Clients never need explanation'],
-            answer: 0
-          },
-          {
-            q: 'Why is this channel useful for designers?',
-            options: ['It helps with craft and career thinking', 'It only shows random trends', 'It replaces product work', 'It avoids all planning'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: 'mizko',
-        type: 'YouTube',
-        category: 'video',
-        sourceName: 'Mizko',
-        title: 'Practical UX/UI tutorials and portfolio advice',
-        link: 'https://www.youtube.com/@Mizko',
-        badgeClass: 'border-purple-900/60 bg-purple-950/40 text-purple-300',
-        summary: 'Mizko is a highly practical YouTube resource for UI/UX learning. The channel is especially useful for seeing step-by-step design workflows, portfolio advice, and tactical ways to improve design quality.',
-        keyLearning: [
-          'How to improve interface quality step by step',
-          'How to build stronger portfolios',
-          'How to approach practical UI problems',
-          'How to learn through walkthroughs and examples'
-        ],
-        tldr: 'A practical YouTube channel for hands-on UI/UX learning and portfolio growth.',
-        quiz: [
-          {
-            q: 'What is Mizko especially useful for?',
-            options: ['Practical UI/UX tutorials', 'Astrology readings', 'Movie trivia', 'Travel booking'],
-            answer: 0
-          },
-          {
-            q: 'What makes a tutorial channel valuable?',
-            options: ['It shows step-by-step workflows', 'It hides the process', 'It avoids examples', 'It only uses buzzwords'],
-            answer: 0
-          },
-          {
-            q: 'A portfolio lesson from a channel like this is likely to focus on…',
-            options: ['How to show your design thinking clearly', 'How to add more random pages', 'How to avoid explaining your work', 'How to make everything identical'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: 'jared-spool',
-        type: 'Social',
-        category: 'social',
-        sourceName: 'Jared Spool',
-        title: 'UX strategy and product leadership commentary',
-        link: 'https://www.linkedin.com/in/jaredspool/',
-        badgeClass: 'border-amber-900/60 bg-amber-950/40 text-amber-300',
-        summary: 'Jared Spool is a strong source for UX strategy, design maturity, and leadership thinking. His content is useful for understanding how design connects to the wider product organisation and why communication matters in UX.',
-        keyLearning: [
-          'How UX connects to team-level decision-making',
-          'How to think about design maturity',
-          'How to communicate design value to others',
-          'How leadership changes design impact'
-        ],
-        tldr: 'Best for UX leadership, strategy, and practical design commentary.',
-        quiz: [
-          {
-            q: 'What type of content is most likely here?',
-            options: ['UX leadership and strategy', 'Baking tutorials', 'Car races', 'Home renovation'],
-            answer: 0
-          },
-          {
-            q: 'Why follow a UX strategist?',
-            options: ['To connect design with business outcomes', 'To avoid collaboration', 'To make design optional', 'To collect random quotes'],
-            answer: 0
-          },
-          {
-            q: 'A useful takeaway from UX leadership posts is that…',
-            options: ['Communication is part of design', 'Only visuals matter', 'Research is unnecessary', 'Teams should never align'],
-            answer: 0
-          }
-        ]
-      },
-      {
-        id: 'julie-zhuo',
-        type: 'Social',
-        category: 'social',
-        sourceName: 'Julie Zhuo',
-        title: 'Design leadership and decision-making',
-        link: 'https://www.linkedin.com/in/juliezhuo/',
-        badgeClass: 'border-amber-900/60 bg-amber-950/40 text-amber-300',
-        summary: 'Julie Zhuo’s content is especially valuable for learning how design leaders think about process, management, communication, and decision-making. It is a good fit for designers who want to grow into stronger collaborators and leaders.',
-        keyLearning: [
-          'How design leaders think about process',
-          'How to explain design decisions clearly',
-          'How to collaborate across product teams',
-          'How leadership changes the scope of design work'
-        ],
-        tldr: 'Great for leadership perspective and thoughtful design process lessons.',
-        quiz: [
-          {
-            q: 'What is a likely theme here?',
-            options: ['Design leadership', 'Sports analytics', 'Gardening tips', 'Film trailers'],
-            answer: 0
-          },
-          {
-            q: 'Why follow design leaders?',
-            options: ['To learn process and decision-making', 'To avoid making decisions', 'To replace all work', 'To see only memes'],
-            answer: 0
-          },
-          {
-            q: 'What should a design leader communicate well?',
-            options: ['Why decisions were made', 'Why users do not matter', 'Why teams should not collaborate', 'Why testing is impossible'],
-            answer: 0
-          }
-        ]
-      }
-    ];
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
-    function renderQuiz(resource) {
-      const quizHtml = resource.quiz.map((q, qi) => {
-        const options = q.options.map((opt, oi) => `
-          <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-slate-800 bg-slate-950/60 p-3 transition hover:border-slate-700">
-            <input type="radio" name="${resource.id}-q${qi}" value="${oi}" class="mt-1 accent-brand-500" />
-            <span class="text-sm text-slate-300">${escapeHtml(opt)}</span>
-          </label>
-        `).join('');
-
-        return `
-          <div class="space-y-2">
-            <p class="text-sm font-semibold text-white">${qi + 1}. ${escapeHtml(q.q)}</p>
-            <div class="grid gap-2">${options}</div>
-          </div>
-        `;
-      }).join('<div class="h-4"></div>');
-
-      return `
-        <div class="mt-5 rounded-2xl border border-slate-800 bg-slate-950/70 p-4">
-          <div class="mb-4 flex items-center justify-between gap-3">
-            <h5 class="font-semibold">Quick quiz</h5>
-            <button type="button" data-quiz-submit="${resource.id}" class="text-sm font-semibold text-brand-400 transition hover:text-brand-300">Check answers</button>
-          </div>
-          <div class="space-y-4">${quizHtml}</div>
-          <p id="${resource.id}-result" class="mt-4 text-sm text-slate-400"></p>
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div class="max-w-3xl mb-16">
+            <span class="text-xs font-semibold uppercase tracking-wider text-brand-500 px-2.5 py-1 rounded-full bg-brand-900/30 border border-brand-500/20">
+                Strategic Playbook
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mt-4 mb-6 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                Dynamic Design Ops Intelligence
+            </h1>
+            <p class="text-lg text-slate-400 leading-relaxed">
+                A live, unified knowledge library. This section aggregates multi-channel industry feeds—including YouTube channels, blogs, and podcasts—into an optimized, filterable grid component layout.
+            </p>
         </div>
-      `;
-    }
 
-    function cardTemplate(resource) {
-      return `
-        <article class="flex h-full flex-col rounded-2xl border border-slate-800 bg-slate-900/50 p-5 transition hover:border-slate-700">
-          <div class="flex items-start justify-between gap-3">
-            <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-semibold ${resource.badgeClass}">${escapeHtml(resource.type)}</span>
-            <span class="text-xs text-slate-500">${escapeHtml(resource.sourceName)}</span>
-          </div>
+        <section id="laws" class="mb-20 scroll-mt-24">
+            <div class="border-b border-slate-800 pb-5 mb-8">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Core Usability Laws</h2>
+                <p class="text-sm text-slate-400 mt-1">Foundational principles every UI audit and checkout flow must anchor on.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-brand-500 font-bold uppercase">01 / Friction</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Jakob's Law</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Users spend most of their time on other sites. They expect your product to work similarly to what they already know. Minimize cognitive friction.
+                    </p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-emerald-500 font-bold uppercase">02 / Target Size</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Fitts's Law</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        The time to acquire a target is a function of the distance to and size of the target. Crucial for thumb-zone targets on mobile checkout flows.
+                    </p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-amber-500 font-bold uppercase">03 / Decisions</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Hick's Law</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        The time it takes to make a decision increases with the number and complexity of choices. Simplify complex menus to boost conversion rates.
+                    </p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-purple-500 font-bold uppercase">04 / Framework</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">JTBD</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        "Jobs-to-be-Done." Users don't buy products; they hire them to make progress. Focus on the user's emotional and structural struggle.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-          <h3 class="mt-4 text-lg font-semibold leading-snug">
-            <a href="${resource.link}" target="_blank" rel="noopener noreferrer" class="transition hover:text-brand-400">
-              ${escapeHtml(resource.title)}
-            </a>
-          </h3>
+        <section id="feed-section" class="scroll-mt-24">
+            <div class="border-b border-slate-800 pb-5 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-white">The Filterable Learning Library</h2>
+                    <p class="text-sm text-slate-400 mt-1">Aggregated feeds filtered down instantly by media content type.</p>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                    <button onclick="filterFeed('all')" id="btn-all" class="filter-btn px-4 py-2 rounded-lg bg-brand-600 text-white hover:bg-brand-500 transition">All Feeds</button>
+                    <button onclick="filterFeed('podcast')" id="btn-podcast" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Podcasts</button>
+                    <button onclick="filterFeed('blog')" id="btn-blog" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Blogs/Written</button>
+                    <button onclick="filterFeed('video')" id="btn-video" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">YouTube/Video</button>
+                </div>
+            </div>
 
-          <p class="mt-2 text-sm leading-relaxed text-slate-400">${escapeHtml(resource.summary)}</p>
+            <div id="feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="animate-pulse p-6 rounded-xl border border-slate-800 bg-slate-900/20 h-48 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="h-4 bg-slate-800 rounded w-1/4"></div>
+                        <div class="h-6 bg-slate-800 rounded w-3/4"></div>
+                    </div>
+                </div>
+                <div class="animate-pulse p-6 rounded-xl border border-slate-800 bg-slate-900/20 h-48 flex flex-col justify-between hidden md:flex">
+                    <div class="space-y-3">
+                        <div class="h-4 bg-slate-800 rounded w-1/4"></div>
+                        <div class="h-6 bg-slate-800 rounded w-3/4"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-          <div class="mt-4 rounded-xl border border-slate-800 bg-slate-950/60 p-4">
-            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Key learning</p>
-            <ul class="mt-2 space-y-2 text-sm text-slate-300">
-              ${resource.keyLearning.map(point => `<li class="flex gap-2"><span class="text-brand-400">•</span><span>${escapeHtml(point)}</span></li>`).join('')}
-            </ul>
+    </main>
 
-            <p class="mt-4 text-xs font-semibold uppercase tracking-wider text-slate-500">TL;DR</p>
-            <p class="mt-2 text-sm text-slate-300">${escapeHtml(resource.tldr)}</p>
-          </div>
+    <footer class="border-t border-slate-800 bg-slate-950 mt-24 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+            <p>&copy; 2026 Product Design Ops. Dynamic parsing active.</p>
+            <p>Unified Data Feed Model.</p>
+        </div>
+    </footer>
 
-          ${renderQuiz(resource)}
+    <script>
+        // Global memory array to store calculated, loaded cross-origin feed items
+        let allFeedItems = [];
 
-          <div class="mt-5 flex items-center justify-between gap-3 border-t border-slate-800 pt-4">
-            <span class="text-xs text-slate-500">Ready to read or listen</span>
-            <a href="${resource.link}" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-brand-400 transition hover:text-brand-300">Open →</a>
-          </div>
-        </article>
-      `;
-    }
+        // Definition configurations mapping distinct industry feeds to UI categories
+        const feedSources = [
+            {
+                url: "https://www.nngroup.com/feed/rss/",
+                category: "blog",
+                sourceName: "Nielsen Norman Group",
+                badgeColorClass: "text-emerald-400 bg-emerald-950/50 border-emerald-900/50"
+            },
+            {
+                url: "https://designbetter.co/feed", 
+                category: "podcast",
+                sourceName: "Design Better Podcast",
+                badgeColorClass: "text-sky-400 bg-sky-950/50 border-sky-900/50"
+            },
+            {
+                // Lenny's Podcast Official YouTube RSS Atom Feed
+                url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC6t1O76G0jYXOAoYCm153dA",
+                category: "video",
+                sourceName: "Lenny's Podcast",
+                badgeColorClass: "text-purple-400 bg-purple-950/50 border-purple-900/50"
+            }
+        ];
 
-    function renderLibrary() {
-      const grid = document.getElementById('library-grid');
-      const status = document.getElementById('status');
-      grid.innerHTML = resources.map(cardTemplate).join('');
-      status.textContent = 'Curated resources loaded successfully.';
-    }
+        async function fetchSingleFeed(source) {
+            const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(source.url);
+            const res = await fetch(proxyUrl);
+            if (!res.ok) throw new Error(`Failed network request for ${source.sourceName}`);
+            
+            const text = await res.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(text, "text/xml");
+            
+            // Adapt parser: YouTube feeds use Atom standard (<entry> nodes), standard blogs use RSS (<item> nodes)
+            const entries = xml.querySelectorAll("entry");
+            const rawItems = entries.length > 0 ? [...entries] : [...xml.querySelectorAll("item")];
+            const slicedItems = rawItems.slice(0, 4); // Fetch top 4 records per source
 
-    function wireQuizzes() {
-      document.querySelectorAll('[data-quiz-submit]').forEach(button => {
-        button.addEventListener('click', () => {
-          const resourceId = button.getAttribute('data-quiz-submit');
-          const resource = resources.find(r => r.id === resourceId);
-          if (!resource) return;
+            return slicedItems.map(item => {
+                let title = item.querySelector("title")?.textContent || "Untitled Content";
+                
+                // Get standard href from RSS or Atom structures
+                let link = "#";
+                const linkTag = item.querySelector("link");
+                if (linkTag) {
+                    link = linkTag.getAttribute("href") || linkTag.textContent || "#";
+                }
 
-          let score = 0;
-          resource.quiz.forEach((q, qi) => {
-            const selected = document.querySelector(`input[name="${resource.id}-q${qi}"]:checked`);
-            if (selected && Number(selected.value) === q.answer) score += 1;
-          });
+                // Handle diverse description schemas (RSS <description> vs Atom/YouTube <summary> or <media:description>)
+                let desc = item.querySelector("description")?.textContent || 
+                           item.querySelector("summary")?.textContent || 
+                           item.querySelector("media\\:description, description")?.textContent || "";
+                
+                desc = desc.replace(/<[^>]*>/g, ''); // Strip rich HTML strings
+                if (desc.length > 130) desc = desc.substring(0, 127) + "...";
 
-          const result = document.getElementById(`${resource.id}-result`);
-          if (!result) return;
+                // Parse standard date elements
+                let pubDateStr = item.querySelector("pubDate")?.textContent || 
+                                 item.querySelector("published")?.textContent || 
+                                 item.querySelector("updated")?.textContent || 
+                                 Date.now();
+                let pubDate = new Date(pubDateStr);
 
-          const total = resource.quiz.length;
-          const message = score === total
-            ? 'Great job — you understood the resource well.'
-            : score >= Math.ceil(total / 2)
-              ? 'Good start — review the summary and key learning, then try again.'
-              : 'Try re-reading the summary and TL;DR, then take the quiz again.';
+                return {
+                    title: title,
+                    link: link,
+                    description: desc,
+                    category: source.category,
+                    sourceName: source.sourceName,
+                    badgeClass: source.badgeColorClass,
+                    pubDate: pubDate
+                };
+            });
+        }
 
-          result.textContent = `You scored ${score}/${total}. ${message}`;
-        });
-      });
-    }
+        async function loadAllFeeds() {
+            const container = document.getElementById("feed");
+            
+            try {
+                // Execute network fetch promises concurrently
+                const fetchPromises = feedSources.map(src => fetchSingleFeed(src).catch(err => {
+                    console.error(err);
+                    return []; // Fail gracefully for individual broken feeds
+                }));
+                
+                const results = await Promise.all(fetchPromises);
+                // Flatten structural sub-arrays and sort chronologically (newest first)
+                allFeedItems = results.flat().sort((a, b) => b.pubDate - a.pubDate);
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderLibrary();
-      wireQuizzes();
-    });
-  </script>
+                if (allFeedItems.length === 0) throw new Error("All resource operations timed out.");
+                
+                // Perform structural visual render
+                renderCards(allFeedItems);
+
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="col-span-full p-8 rounded-xl border border-red-900/20 bg-red-950/10 text-center">
+                        <p class="text-red-400 text-sm font-medium">Unable to aggregate dynamic feeds.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderCards(items) {
+            const container = document.getElementById("feed");
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full p-12 text-center text-slate-500 text-sm">
+                        No active items found under this filter selection.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/50 flex flex-col justify-between hover:border-slate-700 transition duration-300">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded border ${item.badgeClass}">
+                                ${item.category}
+                            </span>
+                            <span class="text-xs text-slate-500">${item.sourceName}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white hover:text-brand-500 transition-colors">
+                            <a href="${item.link}" target="_blank">${item.title}</a>
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-2 leading-relaxed">${item.description}</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-xs text-slate-500 font-mono">${item.pubDate.toLocaleDateString(undefined, {month: 'short', day: 'numeric'})}</span>
+                        <a href="${item.link}" target="_blank" class="text-xs font-semibold text-brand-500 hover:underline flex items-center gap-1">
+                            Access Content 
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function filterFeed(category) {
+            // Manage clean UI active states across Tailwind filter buttons
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+                activeBtn.classList.add('bg-brand-600', 'text-white');
+            }
+
+            // Apply filter logic to cached global item memory without hitting the network proxy again
+            if (category === 'all') {
+                renderCards(allFeedItems);
+            } else {
+                const filtered = allFeedItems.filter(item => item.category === category);
+                renderCards(filtered);
+            }
+        }
+
+        // Run application orchestration on load initialization
+        document.addEventListener("DOMContentLoaded", loadAllFeeds);
+    </script>
 </body>
 </html>
