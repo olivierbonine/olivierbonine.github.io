@@ -1,162 +1,297 @@
-<script>
-    // Global memory array to store loaded items
-    let allFeedItems = [];
-
-    // Cleaned up configurations using a robust JSON converter API
-    const feedSources = [
-        {
-            url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.nngroup.com/feed/rss/",
-            category: "blog",
-            sourceName: "Nielsen Norman Group",
-            badgeColorClass: "text-emerald-400 bg-emerald-950/50 border-emerald-900/50"
-        },
-        {
-            url: "https://api.rss2json.com/v1/api.json?rss_url=https://designbetter.co/feed", 
-            category: "podcast",
-            sourceName: "Design Better Podcast",
-            badgeColorClass: "text-sky-400 bg-sky-950/50 border-sky-900/50"
-        },
-        {
-            url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=UC6t1O76G0jYXOAoYCm153dA",
-            category: "video",
-            sourceName: "Lenny's Podcast",
-            badgeColorClass: "text-purple-400 bg-purple-950/50 border-purple-900/50"
-        }
-    ];
-
-    async function fetchSingleFeed(source) {
-        const res = await fetch(source.url);
-        if (!res.ok) throw new Error(`Failed network request for ${source.sourceName}`);
-        
-        const data = await res.json();
-        const items = data.items || [];
-        
-        return items.slice(0, 4).map(item => {
-            let title = item.title || "Untitled Content";
-            let link = item.link || "#";
-            
-            // Clean up descriptions (stripping HTML tags & truncating)
-            let desc = item.description || "";
-            desc = desc.replace(/<[^>]*>/g, ''); 
-            
-            // Contextual Guard: YouTube video descriptions often start with generic channel text
-            // If it's a video, format the summary layout gracefully
-            if (source.category === 'video') {
-                if (!desc || desc.trim().length < 5) {
-                    desc = "Deep-dive interview uncovering tactical product strategies, growth frameworks, and organizational design patterns used by elite tech teams.";
-                } else if (desc.length > 150) {
-                    desc = desc.substring(0, 147) + "...";
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Design Playbook & Multi-Feed Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    }
                 }
-            } else {
-                if (desc.length > 130) desc = desc.substring(0, 127) + "...";
             }
-
-            let pubDate = new Date(item.pubDate || Date.now());
-
-            return {
-                title: title,
-                link: link,
-                description: desc,
-                category: source.category,
-                sourceName: source.sourceName,
-                badgeClass: source.badgeColorClass,
-                pubDate: pubDate
-            };
-        });
-    }
-
-    async function loadAllFeeds() {
-        const container = document.getElementById("feed");
-        
-        try {
-            const fetchPromises = feedSources.map(src => fetchSingleFeed(src).catch(err => {
-                console.error(`Feed Error [${src.sourceName}]:`, err);
-                return []; 
-            }));
-            
-            const results = await Promise.all(fetchPromises);
-            allFeedItems = results.flat().sort((a, b) => b.pubDate - a.pubDate);
-
-            if (allFeedItems.length === 0) throw new Error("All resource operations timed out.");
-            
-            renderCards(allFeedItems);
-
-        } catch (error) {
-            container.innerHTML = `
-                <div class="col-span-full p-8 rounded-xl border border-red-900/20 bg-red-950/10 text-center">
-                    <p class="text-red-400 text-sm font-medium">Unable to aggregate dynamic feeds.</p>
-                    <p class="text-slate-500 text-xs mt-2">${error.message}</p>
-                </div>
-            `;
         }
-    }
+    </script>
+</head>
+<body class="flex flex-col min-h-full font-sans antialiased selection:bg-brand-500 selection:text-white">
 
-    function renderCards(items) {
-        const container = document.getElementById("feed");
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded bg-gradient-to-tr from-brand-600 to-emerald-500 flex items-center justify-center font-bold text-white text-lg">
+                    P
+                </div>
+                <span class="font-bold tracking-tight text-lg sm:text-xl">DesignOps Portal</span>
+            </div>
+            <nav class="flex space-x-6 text-sm font-medium text-slate-400">
+                <a href="#laws" class="hover:text-white transition-colors">Core Laws</a>
+                <a href="#feed-section" class="hover:text-white transition-colors">Dynamic Library</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
-        if (items.length === 0) {
-            container.innerHTML = `
-                <div class="col-span-full p-12 text-center text-slate-500 text-sm">
-                    No active items found under this filter selection.
-                </div>
-            `;
-            return;
-        }
+        <div class="max-w-3xl mb-16">
+            <span class="text-xs font-semibold uppercase tracking-wider text-brand-500 px-2.5 py-1 rounded-full bg-brand-900/30 border border-brand-500/20">
+                Strategic Playbook
+            </span>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mt-4 mb-6 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                Dynamic Design Ops Intelligence
+            </h1>
+            <p class="text-lg text-slate-400 leading-relaxed">
+                A live, unified knowledge library. This section aggregates multi-channel industry feeds—including YouTube channels, blogs, and podcasts—into an optimized, filterable grid component layout.
+            </p>
+        </div>
 
-        container.innerHTML = items.map(item => `
-            <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/50 flex flex-col justify-between hover:border-slate-700 transition duration-300">
-                <div>
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded border ${item.badgeClass}">
-                            ${item.category}
-                        </span>
-                        <span class="text-xs text-slate-500">${item.sourceName}</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-white hover:text-brand-500 transition-colors">
-                        <a href="${item.link}" target="_blank">${item.title}</a>
-                    </h3>
-                    
-                    <!-- Conditional UI: If it is a video, explicitly format a Summary Label -->
-                    ${item.category === 'video' ? `
-                        <div class="mt-3 px-3 py-2 rounded bg-purple-950/20 border border-purple-900/30 text-xs text-purple-300">
-                            <span class="font-bold tracking-wide uppercase text-[9px] block mb-1 text-purple-400">Video Executive Summary</span>
-                            ${item.description}
-                        </div>
-                    ` : `
-                        <p class="text-sm text-slate-400 mt-2 leading-relaxed">${item.description}</p>
-                    `}
+        <section id="laws" class="mb-20 scroll-mt-24">
+            <div class="border-b border-slate-800 pb-5 mb-8">
+                <h2 class="text-2xl font-bold tracking-tight text-white">Core Usability Laws</h2>
+                <p class="text-sm text-slate-400 mt-1">Foundational principles every UI audit and checkout flow must anchor on.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-brand-500 font-bold uppercase">01 / Friction</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Jakob's Law</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Users spend most of their time on other sites. They expect your product to work similarly to what they already know. Minimize cognitive friction.
+                    </p>
                 </div>
-                <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                    <span class="text-xs text-slate-500 font-mono">${item.pubDate.toLocaleDateString(undefined, {month: 'short', day: 'numeric'})}</span>
-                    <a href="${item.link}" target="_blank" class="text-xs font-semibold text-brand-500 hover:underline flex items-center gap-1">
-                        ${item.category === 'video' ? 'Watch Episode' : 'Access Content'} 
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                    </a>
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-emerald-500 font-bold uppercase">02 / Target Size</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Fitts's Law</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        The time to acquire a target is a function of the distance to and size of the target. Crucial for thumb-zone targets on mobile checkout flows.
+                    </p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-amber-500 font-bold uppercase">03 / Decisions</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Hick's Law</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        The time it takes to make a decision increases with the number and complexity of choices. Simplify complex menus to boost conversion rates.
+                    </p>
+                </div>
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/30 hover:border-slate-700 transition duration-300">
+                    <span class="text-xs font-mono text-purple-500 font-bold uppercase">04 / Framework</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">JTBD</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        "Jobs-to-be-Done." Users don't buy products; they hire them to make progress. Focus on the user's emotional and structural struggle.
+                    </p>
                 </div>
             </div>
-        `).join("");
-    }
+        </section>
 
-    function filterFeed(category) {
-        const buttons = document.querySelectorAll('.filter-btn');
-        buttons.forEach(btn => {
-            btn.classList.remove('bg-brand-600', 'text-white');
-            btn.classList.add('bg-slate-800', 'text-slate-300');
-        });
-        
-        const activeBtn = document.getElementById(`btn-${category}`);
-        if (activeBtn) {
-            activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
-            activeBtn.classList.add('bg-brand-600', 'text-white');
+        <section id="feed-section" class="scroll-mt-24">
+            <div class="border-b border-slate-800 pb-5 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold tracking-tight text-white">The Filterable Learning Library</h2>
+                    <p class="text-sm text-slate-400 mt-1">Aggregated feeds filtered down instantly by media content type.</p>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                    <button onclick="filterFeed('all')" id="btn-all" class="filter-btn px-4 py-2 rounded-lg bg-brand-600 text-white hover:bg-brand-500 transition">All Feeds</button>
+                    <button onclick="filterFeed('podcast')" id="btn-podcast" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Podcasts</button>
+                    <button onclick="filterFeed('blog')" id="btn-blog" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Blogs/Written</button>
+                    <button onclick="filterFeed('video')" id="btn-video" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">YouTube/Video</button>
+                </div>
+            </div>
+
+            <div id="feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="animate-pulse p-6 rounded-xl border border-slate-800 bg-slate-900/20 h-48 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="h-4 bg-slate-800 rounded w-1/4"></div>
+                        <div class="h-6 bg-slate-800 rounded w-3/4"></div>
+                    </div>
+                </div>
+                <div class="animate-pulse p-6 rounded-xl border border-slate-800 bg-slate-900/20 h-48 flex flex-col justify-between hidden md:flex">
+                    <div class="space-y-3">
+                        <div class="h-4 bg-slate-800 rounded w-1/4"></div>
+                        <div class="h-6 bg-slate-800 rounded w-3/4"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950 mt-24 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+            <p>&copy; 2026 Product Design Ops. Dynamic parsing active.</p>
+            <p>Unified Data Feed Model.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Global memory array to store loaded items
+        let allFeedItems = [];
+
+        // Cleaned up configurations using a robust JSON converter API
+        const feedSources = [
+            {
+                url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.nngroup.com/feed/rss/",
+                category: "blog",
+                sourceName: "Nielsen Norman Group",
+                badgeColorClass: "text-emerald-400 bg-emerald-950/50 border-emerald-900/50"
+            },
+            {
+                url: "https://api.rss2json.com/v1/api.json?rss_url=https://designbetter.co/feed", 
+                category: "podcast",
+                sourceName: "Design Better Podcast",
+                badgeColorClass: "text-sky-400 bg-sky-950/50 border-sky-900/50"
+            },
+            {
+                url: "https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=UC6t1O76G0jYXOAoYCm153dA",
+                category: "video",
+                sourceName: "Lenny's Podcast",
+                badgeColorClass: "text-purple-400 bg-purple-950/50 border-purple-900/50"
+            }
+        ];
+
+        async function fetchSingleFeed(source) {
+            const res = await fetch(source.url);
+            if (!res.ok) throw new Error(`Failed network request for ${source.sourceName}`);
+            
+            const data = await res.json();
+            const items = data.items || [];
+            
+            return items.slice(0, 4).map(item => {
+                let title = item.title || "Untitled Content";
+                let link = item.link || "#";
+                
+                // Clean up descriptions (stripping HTML tags & truncating)
+                let desc = item.description || "";
+                desc = desc.replace(/<[^>]*>/g, ''); 
+                
+                // Contextual Guard: YouTube video descriptions often start with generic channel text
+                // If it's a video, format the summary layout gracefully
+                if (source.category === 'video') {
+                    if (!desc || desc.trim().length < 5) {
+                        desc = "Deep-dive interview uncovering tactical product strategies, growth frameworks, and organizational design patterns used by elite tech teams.";
+                    } else if (desc.length > 150) {
+                        desc = desc.substring(0, 147) + "...";
+                    }
+                } else {
+                    if (desc.length > 130) desc = desc.substring(0, 127) + "...";
+                }
+
+                let pubDate = new Date(item.pubDate || Date.now());
+
+                return {
+                    title: title,
+                    link: link,
+                    description: desc,
+                    category: source.category,
+                    sourceName: source.sourceName,
+                    badgeClass: source.badgeColorClass,
+                    pubDate: pubDate
+                };
+            });
         }
 
-        if (category === 'all') {
-            renderCards(allFeedItems);
-        } else {
-            const filtered = allFeedItems.filter(item => item.category === category);
-            renderCards(filtered);
-        }
-    }
+        async function loadAllFeeds() {
+            const container = document.getElementById("feed");
+            
+            try {
+                const fetchPromises = feedSources.map(src => fetchSingleFeed(src).catch(err => {
+                    console.error(`Feed Error [${src.sourceName}]:`, err);
+                    return []; 
+                }));
+                
+                const results = await Promise.all(fetchPromises);
+                allFeedItems = results.flat().sort((a, b) => b.pubDate - a.pubDate);
 
-    document.addEventListener("DOMContentLoaded", loadAllFeeds);
-</script>
+                if (allFeedItems.length === 0) throw new Error("All resource operations timed out.");
+                
+                renderCards(allFeedItems);
+
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="col-span-full p-8 rounded-xl border border-red-900/20 bg-red-950/10 text-center">
+                        <p class="text-red-400 text-sm font-medium">Unable to aggregate dynamic feeds.</p>
+                        <p class="text-slate-500 text-xs mt-2">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderCards(items) {
+            const container = document.getElementById("feed");
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full p-12 text-center text-slate-500 text-sm">
+                        No active items found under this filter selection.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/50 flex flex-col justify-between hover:border-slate-700 transition duration-300">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded border ${item.badgeClass}">
+                                ${item.category}
+                            </span>
+                            <span class="text-xs text-slate-500">${item.sourceName}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white hover:text-brand-500 transition-colors">
+                            <a href="${item.link}" target="_blank">${item.title}</a>
+                        </h3>
+                        
+                        <!-- Conditional UI: If it is a video, explicitly format a Summary Label -->
+                        ${item.category === 'video' ? `
+                            <div class="mt-3 px-3 py-2 rounded bg-purple-950/20 border border-purple-900/30 text-xs text-purple-300">
+                                <span class="font-bold tracking-wide uppercase text-[9px] block mb-1 text-purple-400">Video Executive Summary</span>
+                                ${item.description}
+                            </div>
+                        ` : `
+                            <p class="text-sm text-slate-400 mt-2 leading-relaxed">${item.description}</p>
+                        `}
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-xs text-slate-500 font-mono">${item.pubDate.toLocaleDateString(undefined, {month: 'short', day: 'numeric'})}</span>
+                        <a href="${item.link}" target="_blank" class="text-xs font-semibold text-brand-500 hover:underline flex items-center gap-1">
+                            ${item.category === 'video' ? 'Watch Episode' : 'Access Content'} 
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function filterFeed(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+                activeBtn.classList.add('bg-brand-600', 'text-white');
+            }
+
+            if (category === 'all') {
+                renderCards(allFeedItems);
+            } else {
+                const filtered = allFeedItems.filter(item => item.category === category);
+                renderCards(filtered);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadAllFeeds);
+    </script>
+</body>
+</html>
