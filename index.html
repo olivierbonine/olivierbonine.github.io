@@ -50,7 +50,7 @@
                 Dynamic Design Ops Intelligence
             </h1>
             <p class="text-lg text-slate-400 leading-relaxed">
-                A live, unified knowledge library. This section aggregates multi-channel industry feeds into an optimized, filterable grid component layout.
+                A live, unified knowledge library. This section aggregates multi-channel industry feeds—including YouTube channels, blogs, and podcasts—into an optimized, filterable grid component layout.
             </p>
         </div>
 
@@ -135,7 +135,7 @@
         // Global memory array to store calculated, loaded cross-origin feed items
         let allFeedItems = [];
 
-        // Definition configurations mapping distinct industry RSS feeds to UI categories
+        // Definition configurations mapping distinct industry feeds to UI categories
         const feedSources = [
             {
                 url: "https://www.nngroup.com/feed/rss/",
@@ -150,10 +150,11 @@
                 badgeColorClass: "text-sky-400 bg-sky-950/50 border-sky-900/50"
             },
             {
-                url: "https://uxdesign.cc/feed",
-                category: "blog",
-                sourceName: "UX Collective",
-                badgeColorClass: "text-emerald-400 bg-emerald-950/50 border-emerald-900/50"
+                // Lenny's Podcast Official YouTube RSS Atom Feed
+                url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC6t1O76G0jYXOAoYCm153dA",
+                category: "video",
+                sourceName: "Lenny's Podcast",
+                badgeColorClass: "text-purple-400 bg-purple-950/50 border-purple-900/50"
             }
         ];
 
@@ -165,22 +166,45 @@
             const text = await res.text();
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, "text/xml");
-            const items = [...xml.querySelectorAll("item")].slice(0, 4); // Fetch top 4 records per source
+            
+            // Adapt parser: YouTube feeds use Atom standard (<entry> nodes), standard blogs use RSS (<item> nodes)
+            const entries = xml.querySelectorAll("entry");
+            const rawItems = entries.length > 0 ? [...entries] : [...xml.querySelectorAll("item")];
+            const slicedItems = rawItems.slice(0, 4); // Fetch top 4 records per source
 
-            return items.map(item => {
-                let desc = item.querySelector("description")?.textContent || "";
+            return slicedItems.map(item => {
+                let title = item.querySelector("title")?.textContent || "Untitled Content";
+                
+                // Get standard href from RSS or Atom structures
+                let link = "#";
+                const linkTag = item.querySelector("link");
+                if (linkTag) {
+                    link = linkTag.getAttribute("href") || linkTag.textContent || "#";
+                }
+
+                // Handle diverse description schemas (RSS <description> vs Atom/YouTube <summary> or <media:description>)
+                let desc = item.querySelector("description")?.textContent || 
+                           item.querySelector("summary")?.textContent || 
+                           item.querySelector("media\\:description, description")?.textContent || "";
+                
                 desc = desc.replace(/<[^>]*>/g, ''); // Strip rich HTML strings
                 if (desc.length > 130) desc = desc.substring(0, 127) + "...";
 
+                // Parse standard date elements
+                let pubDateStr = item.querySelector("pubDate")?.textContent || 
+                                 item.querySelector("published")?.textContent || 
+                                 item.querySelector("updated")?.textContent || 
+                                 Date.now();
+                let pubDate = new Date(pubDateStr);
+
                 return {
-                    title: item.querySelector("title")?.textContent || "Untitled Content",
-                    link: item.querySelector("link")?.textContent || "#",
+                    title: title,
+                    link: link,
                     description: desc,
                     category: source.category,
                     sourceName: source.sourceName,
                     badgeClass: source.badgeColorClass,
-                    // Parse native timestamp or fallback gracefully
-                    pubDate: new Date(item.querySelector("pubDate")?.textContent || Date.now())
+                    pubDate: pubDate
                 };
             });
         }
