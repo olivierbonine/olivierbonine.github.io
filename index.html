@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Design Playbook & Feed Library</title>
+    <title>Product Design Playbook & Multi-Feed Library</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -35,7 +35,7 @@
             </div>
             <nav class="flex space-x-6 text-sm font-medium text-slate-400">
                 <a href="#laws" class="hover:text-white transition-colors">Core Laws</a>
-                <a href="#feed-section" class="hover:text-white transition-colors">Live Feed</a>
+                <a href="#feed-section" class="hover:text-white transition-colors">Dynamic Library</a>
             </nav>
         </div>
     </header>
@@ -47,10 +47,10 @@
                 Strategic Playbook
             </span>
             <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mt-4 mb-6 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-                Aligning Usability with Business KPIs
+                Dynamic Design Ops Intelligence
             </h1>
             <p class="text-lg text-slate-400 leading-relaxed">
-                Welcome to the centralized knowledge hub. This curated collection connects core interaction laws with live, dynamic industry RSS feeds to build products that scale.
+                A live, unified knowledge library. This section aggregates multi-channel industry feeds into an optimized, filterable grid component layout.
             </p>
         </div>
 
@@ -95,10 +95,15 @@
         <section id="feed-section" class="scroll-mt-24">
             <div class="border-b border-slate-800 pb-5 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl font-bold tracking-tight text-white">Live Industry Insights</h2>
-                    <p class="text-sm text-slate-400 mt-1">Direct from Nielsen Norman Group's UX Research RSS feed.</p>
+                    <h2 class="text-2xl font-bold tracking-tight text-white">The Filterable Learning Library</h2>
+                    <p class="text-sm text-slate-400 mt-1">Aggregated feeds filtered down instantly by media content type.</p>
                 </div>
-                <span class="text-xs font-mono text-slate-500">Auto-updating feed</span>
+                <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                    <button onclick="filterFeed('all')" id="btn-all" class="filter-btn px-4 py-2 rounded-lg bg-brand-600 text-white hover:bg-brand-500 transition">All Feeds</button>
+                    <button onclick="filterFeed('podcast')" id="btn-podcast" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Podcasts</button>
+                    <button onclick="filterFeed('blog')" id="btn-blog" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Blogs/Written</button>
+                    <button onclick="filterFeed('video')" id="btn-video" class="filter-btn px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">YouTube/Video</button>
+                </div>
             </div>
 
             <div id="feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -106,25 +111,13 @@
                     <div class="space-y-3">
                         <div class="h-4 bg-slate-800 rounded w-1/4"></div>
                         <div class="h-6 bg-slate-800 rounded w-3/4"></div>
-                        <div class="h-4 bg-slate-800 rounded w-full"></div>
                     </div>
-                    <div class="h-4 bg-slate-800 rounded w-1/3"></div>
                 </div>
                 <div class="animate-pulse p-6 rounded-xl border border-slate-800 bg-slate-900/20 h-48 flex flex-col justify-between hidden md:flex">
                     <div class="space-y-3">
                         <div class="h-4 bg-slate-800 rounded w-1/4"></div>
                         <div class="h-6 bg-slate-800 rounded w-3/4"></div>
-                        <div class="h-4 bg-slate-800 rounded w-full"></div>
                     </div>
-                    <div class="h-4 bg-slate-800 rounded w-1/3"></div>
-                </div>
-                <div class="animate-pulse p-6 rounded-xl border border-slate-800 bg-slate-900/20 h-48 flex flex-col justify-between hidden lg:flex">
-                    <div class="space-y-3">
-                        <div class="h-4 bg-slate-800 rounded w-1/4"></div>
-                        <div class="h-6 bg-slate-800 rounded w-3/4"></div>
-                        <div class="h-4 bg-slate-800 rounded w-full"></div>
-                    </div>
-                    <div class="h-4 bg-slate-800 rounded w-1/3"></div>
                 </div>
             </div>
         </section>
@@ -133,78 +126,155 @@
 
     <footer class="border-t border-slate-800 bg-slate-950 mt-24 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-            <p>&copy; 2026 Product Design Ops. Built strictly for cross-functional alignment.</p>
-            <p>Remember: "Simple is harder than complex." — Steve Jobs</p>
+            <p>&copy; 2026 Product Design Ops. Dynamic parsing active.</p>
+            <p>Unified Data Feed Model.</p>
         </div>
     </footer>
 
     <script>
-        async function loadFeed() {
-            // NN/g's actual feed routed through a public CORS proxy to allow client-side fetch.
-            const feedUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.nngroup.com/feed/rss/");
+        // Global memory array to store calculated, loaded cross-origin feed items
+        let allFeedItems = [];
+
+        // Definition configurations mapping distinct industry RSS feeds to UI categories
+        const feedSources = [
+            {
+                url: "https://www.nngroup.com/feed/rss/",
+                category: "blog",
+                sourceName: "Nielsen Norman Group",
+                badgeColorClass: "text-emerald-400 bg-emerald-950/50 border-emerald-900/50"
+            },
+            {
+                url: "https://designbetter.co/feed", 
+                category: "podcast",
+                sourceName: "Design Better Podcast",
+                badgeColorClass: "text-sky-400 bg-sky-950/50 border-sky-900/50"
+            },
+            {
+                url: "https://uxdesign.cc/feed",
+                category: "blog",
+                sourceName: "UX Collective",
+                badgeColorClass: "text-emerald-400 bg-emerald-950/50 border-emerald-900/50"
+            }
+        ];
+
+        async function fetchSingleFeed(source) {
+            const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(source.url);
+            const res = await fetch(proxyUrl);
+            if (!res.ok) throw new Error(`Failed network request for ${source.sourceName}`);
+            
+            const text = await res.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(text, "text/xml");
+            const items = [...xml.querySelectorAll("item")].slice(0, 4); // Fetch top 4 records per source
+
+            return items.map(item => {
+                let desc = item.querySelector("description")?.textContent || "";
+                desc = desc.replace(/<[^>]*>/g, ''); // Strip rich HTML strings
+                if (desc.length > 130) desc = desc.substring(0, 127) + "...";
+
+                return {
+                    title: item.querySelector("title")?.textContent || "Untitled Content",
+                    link: item.querySelector("link")?.textContent || "#",
+                    description: desc,
+                    category: source.category,
+                    sourceName: source.sourceName,
+                    badgeClass: source.badgeColorClass,
+                    // Parse native timestamp or fallback gracefully
+                    pubDate: new Date(item.querySelector("pubDate")?.textContent || Date.now())
+                };
+            });
+        }
+
+        async function loadAllFeeds() {
             const container = document.getElementById("feed");
-
+            
             try {
-                const res = await fetch(feedUrl);
-                if (!res.ok) throw new Error("Failed to fetch RSS data");
+                // Execute network fetch promises concurrently
+                const fetchPromises = feedSources.map(src => fetchSingleFeed(src).catch(err => {
+                    console.error(err);
+                    return []; // Fail gracefully for individual broken feeds
+                }));
                 
-                const text = await res.text();
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(text, "text/xml");
+                const results = await Promise.all(fetchPromises);
+                // Flatten structural sub-arrays and sort chronologically (newest first)
+                allFeedItems = results.flat().sort((a, b) => b.pubDate - a.pubDate);
 
-                const items = [...xml.querySelectorAll("item")].slice(0, 6);
-
-                if (items.length === 0) {
-                    throw new Error("No items found in feed");
-                }
-
-                container.innerHTML = items.map(item => {
-                    const title = item.querySelector("title")?.textContent || "Untitled Article";
-                    const link = item.querySelector("link")?.textContent || "#";
-                    // Truncate description text for layout aesthetic consistency
-                    let desc = item.querySelector("description")?.textContent || "";
-                    desc = desc.replace(/<[^>]*>/g, ''); // Strip HTML tags
-                    if (desc.length > 140) {
-                        desc = desc.substring(0, 137) + "...";
-                    }
-
-                    return `
-                        <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/50 flex flex-col justify-between hover:border-slate-700 transition duration-300">
-                            <div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="text-[10px] font-bold tracking-wider uppercase text-emerald-400 px-2.5 py-1 rounded bg-emerald-950/50 border border-emerald-900/50">Article</span>
-                                    <span class="text-xs text-slate-500">Live Insights</span>
-                                </div>
-                                <h3 class="text-lg font-bold text-white hover:text-brand-500 transition-colors">
-                                    <a href="${link}" target="_blank">${title}</a>
-                                </h3>
-                                <p class="text-sm text-slate-400 mt-2 leading-relaxed">${desc}</p>
-                            </div>
-                            <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                                <span class="text-xs text-slate-500">Source: NN/g</span>
-                                <a href="${link}" target="_blank" class="text-xs font-semibold text-brand-500 hover:underline flex items-center gap-1">
-                                    Read Article 
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                }).join("");
+                if (allFeedItems.length === 0) throw new Error("All resource operations timed out.");
+                
+                // Perform structural visual render
+                renderCards(allFeedItems);
 
             } catch (error) {
-                console.error("Error loading RSS feed:", error);
-                // Fallback to error/mock card ui if feed is blocked or offline
                 container.innerHTML = `
                     <div class="col-span-full p-8 rounded-xl border border-red-900/20 bg-red-950/10 text-center">
-                        <p class="text-red-400 text-sm font-medium">Unable to load the live RSS feed at this moment due to network configuration.</p>
-                        <p class="text-slate-500 text-xs mt-1">Please ensure your network allows external connections or try a different target feed.</p>
+                        <p class="text-red-400 text-sm font-medium">Unable to aggregate dynamic feeds.</p>
                     </div>
                 `;
             }
         }
 
-        // Initialize on DOM load
-        document.addEventListener("DOMContentLoaded", loadFeed);
+        function renderCards(items) {
+            const container = document.getElementById("feed");
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full p-12 text-center text-slate-500 text-sm">
+                        No active items found under this filter selection.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="p-6 rounded-xl border border-slate-800 bg-slate-900/50 flex flex-col justify-between hover:border-slate-700 transition duration-300">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded border ${item.badgeClass}">
+                                ${item.category}
+                            </span>
+                            <span class="text-xs text-slate-500">${item.sourceName}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white hover:text-brand-500 transition-colors">
+                            <a href="${item.link}" target="_blank">${item.title}</a>
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-2 leading-relaxed">${item.description}</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-xs text-slate-500 font-mono">${item.pubDate.toLocaleDateString(undefined, {month: 'short', day: 'numeric'})}</span>
+                        <a href="${item.link}" target="_blank" class="text-xs font-semibold text-brand-500 hover:underline flex items-center gap-1">
+                            Access Content 
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function filterFeed(category) {
+            // Manage clean UI active states across Tailwind filter buttons
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            
+            const activeBtn = document.getElementById(`btn-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+                activeBtn.classList.add('bg-brand-600', 'text-white');
+            }
+
+            // Apply filter logic to cached global item memory without hitting the network proxy again
+            if (category === 'all') {
+                renderCards(allFeedItems);
+            } else {
+                const filtered = allFeedItems.filter(item => item.category === category);
+                renderCards(filtered);
+            }
+        }
+
+        // Run application orchestration on load initialization
+        document.addEventListener("DOMContentLoaded", loadAllFeeds);
     </script>
 </body>
 </html>
